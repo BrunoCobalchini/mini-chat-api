@@ -22,7 +22,7 @@ public class Conversation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false)
-	private String id; 
+	private Integer id; 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "Conversation")
 	@JsonManagedReference("Conversation")
@@ -41,19 +41,19 @@ public class Conversation {
 		this.messages = messages;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public List<Integer> getMembers() {
 		return members;
 	}
 
 	public void setMembers(List<Integer> members) {
 		this.members = members;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 }
