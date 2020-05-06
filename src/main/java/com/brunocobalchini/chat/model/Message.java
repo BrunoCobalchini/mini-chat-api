@@ -4,31 +4,34 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "Message")
+@Table(name = "message")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
 	
 	@Id
-	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Id
 	@Column(name =  "sender_id", nullable = false)
 	private Integer senderId;
 	
-	@Id
 	@Column(name =  "receiver_id", nullable = false)
 	private Integer receiverId;
 
 	@Column(nullable = false)
 	private String content;
 
+	@CreatedDate
 	@Column(name =  "created_on", nullable = false)
 	private LocalDateTime createdOn;
 	
@@ -53,16 +56,8 @@ public class Message {
 		return createdOn;
 	}
 
-	public void setCreatedOn(LocalDateTime createdOn) {
-		this.createdOn = createdOn;
-	}
-
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getContent() {
