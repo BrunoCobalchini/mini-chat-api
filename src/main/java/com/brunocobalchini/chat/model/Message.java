@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -15,14 +17,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Message {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false)
 	private Integer id;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name =  "sender_id", nullable = false)
 	private Integer senderId;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name =  "receiver_id", nullable = false)
 	private Integer receiverId;
 
