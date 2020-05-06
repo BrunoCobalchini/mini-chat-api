@@ -2,17 +2,36 @@ package com.brunocobalchini.chat.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name = "Message")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Message {
 	
+	@Id
+	@Column(nullable = false)
 	private Integer id;
 	
+	@Id
+	@Column(name =  "sender_id", nullable = false)
 	private Integer senderId;
 	
+	@Id
+	@Column(name =  "receiver_id", nullable = false)
 	private Integer receiverId;
 
+	@Column(nullable = false)
 	private String content;
 
+	@Column(name =  "created_on", nullable = false)
 	private LocalDateTime createdOn;
+	
 
 	public Integer getSenderId() {
 		return senderId;
