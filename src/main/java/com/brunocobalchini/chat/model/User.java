@@ -10,13 +10,12 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column(name =  "full_name", nullable = false)
@@ -25,16 +24,11 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false) //Poderia ser um ID tbm
+	@Column(nullable = false, unique = true) //Poderia ser um ID tbm
 	private String email;
-
 	
 	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getFullName() {
@@ -45,7 +39,7 @@ public class User {
 		this.fullName = fullName;
 	}
 
-		public String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
