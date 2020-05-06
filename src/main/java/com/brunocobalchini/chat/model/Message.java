@@ -34,7 +34,7 @@ public class Message {
 	@CreatedDate
 	@Column(name =  "created_on", nullable = false)
 	private LocalDateTime createdOn;
-	
+
 
 	public Integer getSenderId() {
 		return senderId;
