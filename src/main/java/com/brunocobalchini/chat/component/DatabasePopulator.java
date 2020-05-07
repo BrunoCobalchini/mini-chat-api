@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import com.brunocobalchini.chat.model.Conversation;
 import com.brunocobalchini.chat.model.Message;
 import com.brunocobalchini.chat.model.User;
-import com.github.brunocobalchini.repository.ConversationRepository;
-import com.github.brunocobalchini.repository.MessageRepository;
-import com.github.brunocobalchini.repository.UserRepository;
+import com.brunocobalchini.chat.repository.ConversationRepository;
+import com.brunocobalchini.chat.repository.MessageRepository;
+import com.brunocobalchini.chat.repository.UserRepository;
 
 @Component
 public class DatabasePopulator {

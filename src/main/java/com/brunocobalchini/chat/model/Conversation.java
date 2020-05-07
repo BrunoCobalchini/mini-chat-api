@@ -1,5 +1,6 @@
 package com.brunocobalchini.chat.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -26,12 +27,12 @@ public class Conversation {
 	@ElementCollection
 	@CollectionTable(name = "conversation_member", joinColumns = @JoinColumn(name = "conversation_id"))
 	@Column(name = "member_id", nullable = false)
-	private Set<Integer> members;
+	private Set<Integer> members = new HashSet<>();
 
 	@ElementCollection
 	@CollectionTable(name = "conversation_message", joinColumns = @JoinColumn(name = "conversation_id"))
 	@Column(name = "message_id", nullable = false)
-	private Set<Integer> messages;
+	private Set<Integer> messages = new HashSet<>();
 
 	public Set<Integer> getMessages() {
 		return messages;
