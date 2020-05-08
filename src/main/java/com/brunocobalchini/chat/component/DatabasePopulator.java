@@ -45,42 +45,34 @@ public class DatabasePopulator {
 		steve.setPassword("unknown");
 		steve = userRepo.save(steve);
 		
-		// TODO: create user "Nick Fury" and save to the database
-		// TODO: create user "Tony Stark" and save to the database
-		// TODO: create user "Steve Rogers" and save to the database
-		
 		Conversation conv = new Conversation();
 		conv.getMembers().add(fury.getId());
 		conv.getMembers().add(tony.getId());		
 		conv.getMembers().add(steve.getId());
-		conv.getMessages().add(fury.getId());
-		conv.getMessages().add(tony.getId());
-		conv.getMessages().add(steve.getId());
-		
-		// TODO: Create conversation with those 3 users and save to the database
+		conv = conversationRepo.save(conv);
 
-		// TODO: Create Message from user "Nick Fury" with content: "Avengers, assemble!" and save to the database
-		// TODO: Create Message from user "Tony Stark" with content: "I am Iron Man." and save to the database
-		// TODO: Create Message from user "Tony Stark" with content: "I Can Do This All Day." and save to the database
-		
 		Message message = new Message();
 		message.setContent("Avengers, assemble!");
 		message.setSenderId(fury.getId());
-		message.setReceiverId((tony.getId())); // TODO:  conversation id
-		messageRepo.save(message);
+		message.setReceiverId(conv.getId());
+		message = messageRepo.save(message);
+		conv.getMessages().add(message.getId());
 		
 		message = new Message();
 		message.setContent("I am Iron Man");
 		message.setSenderId(tony.getId());
-		message.setReceiverId(steve.getId()); // TODO:  conversation id
-		messageRepo.save(message);
+		message.setReceiverId(conv.getId());
+		message = messageRepo.save(message);
+		conv.getMessages().add(message.getId());
 		
 		message = new Message();
 		message.setContent("I Can Do This All Day");
 		message.setSenderId(steve.getId());
-		message.setReceiverId((fury.getId())); // TODO:  conversation id
-		messageRepo.save(message);
+		message.setReceiverId(conv.getId());
+		message = messageRepo.save(message);
+		conv.getMessages().add(message.getId());
 		
+		conversationRepo.save(conv);
 	}
 
 }
