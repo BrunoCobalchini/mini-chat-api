@@ -38,7 +38,6 @@ public class Message {
 	@Column(name =  "created_on", nullable = false)
 	private LocalDateTime createdOn;
 
-
 	public Integer getSenderId() {
 		return senderId;
 	}
@@ -61,6 +60,10 @@ public class Message {
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getContent() {

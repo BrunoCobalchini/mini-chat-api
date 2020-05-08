@@ -27,6 +27,10 @@ public class User {
 	@Column(nullable = false, unique = true) //Poderia ser um ID tbm
 	private String email;
 	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}
