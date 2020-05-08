@@ -2,8 +2,6 @@ package com.github.brunocobalchini.controller;
 
 import java.util.Collection;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,25 +39,38 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteUserById(@PathVariable Integer id) {
 		userRepo.deleteById(id);
 	}
 
-	@PostMapping(path = "/{users}")
-	public ResponseEntity<User> postUser(@PathVariable User users, @RequestBody User user) {
-
+	@PostMapping
+	public ResponseEntity<User> postUser(@RequestBody User user) {
+		user.setId(null);
 		user = userRepo.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 	}
-		
+
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<User> putUser(@PathVariable Integer id, @RequestBody User user) {
-		
-		User oldUser = userRepo.findById(id).get();
-		oldUser = userRepo.save(oldUser);
-		return ResponseEntity.status(HttpStatus.OK).body(oldUser);
+		if (userRepo.existsById(id)) {
+			User oldUser = userRepo.findById(id).get();
+			if (!StringUtils.isEmpty(user.getEmail())) {
+				oldUser.setEmail(user.getEmail());
+			}
+			if (!StringUtils.isEmpty(user.getFullName())) {
+				oldUser.setFullName(user.getFullName());
+			}
+			if (!StringUtils.isEmpty(user.getPassword())) {
+				oldUser.setPassword(user.getPassword());
+			}				
+			oldUser = userRepo.save(oldUser);
+			return ResponseEntity.status(HttpStatus.OK).body(oldUser);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
+		}
+
 	}
 }
