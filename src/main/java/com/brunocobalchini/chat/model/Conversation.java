@@ -53,5 +53,4 @@ public class Conversation {
 	public Integer getId() {
 		return id;
 	}
-
 }

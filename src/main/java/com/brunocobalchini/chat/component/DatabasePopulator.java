@@ -53,30 +53,33 @@ public class DatabasePopulator {
 		conv.getMembers().add(fury.getId());
 		conv.getMembers().add(tony.getId());		
 		conv.getMembers().add(steve.getId());
+		conv.getMessages().add(fury.getId());
+		conv.getMessages().add(tony.getId());
+		conv.getMessages().add(steve.getId());
 		
 		// TODO: Create conversation with those 3 users and save to the database
 
 		// TODO: Create Message from user "Nick Fury" with content: "Avengers, assemble!" and save to the database
 		// TODO: Create Message from user "Tony Stark" with content: "I am Iron Man." and save to the database
 		// TODO: Create Message from user "Tony Stark" with content: "I Can Do This All Day." and save to the database
+		
 		Message message = new Message();
 		message.setContent("Avengers, assemble!");
 		message.setSenderId(fury.getId());
-		message.setReceiverId(1); // TODO:  conversation id
+		message.setReceiverId((tony.getId())); // TODO:  conversation id
 		messageRepo.save(message);
 		
 		message = new Message();
 		message.setContent("I am Iron Man");
 		message.setSenderId(tony.getId());
-		message.setReceiverId(2); // TODO:  conversation id
+		message.setReceiverId(steve.getId()); // TODO:  conversation id
 		messageRepo.save(message);
 		
 		message = new Message();
 		message.setContent("I Can Do This All Day");
 		message.setSenderId(steve.getId());
-		message.setReceiverId(3); // TODO:  conversation id
+		message.setReceiverId((fury.getId())); // TODO:  conversation id
 		messageRepo.save(message);
-		
 		
 	}
 
