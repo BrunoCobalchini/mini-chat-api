@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import com.brunocobalchini.chat.repository.MessageRepository;
 @RestController
 @RequestMapping(path = "/messages")
 public class MessageController {
-	
+
 	@Autowired
 	private MessageRepository messageRepo;
 
@@ -38,25 +39,37 @@ public class MessageController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteMessageById(@PathVariable Integer id) {
 		messageRepo.deleteById(id);
 	}
 
-	@PostMapping(path = "/{messages}")
-	public ResponseEntity<Message> postMessage(@PathVariable Message messages, @RequestBody Message message) {
-
+	@PostMapping
+	public ResponseEntity<Message> postMessage(@RequestBody Message message) {
+		message.setId(null);
 		message = messageRepo.save(message);
 		return ResponseEntity.status(HttpStatus.CREATED).body(message);
 	}
-		
+
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Message> putMessage(@PathVariable Integer id, @RequestBody Message message) {
-		
-		Message oldMessage = messageRepo.findById(id).get();
-		oldMessage = messageRepo.save(oldMessage);
-		return ResponseEntity.status(HttpStatus.OK).body(oldMessage);
+		if (messageRepo.existsById(id)) {
+			Message oldMessage = messageRepo.findById(id).get();
+			if (!StringUtils.isEmpty(message.getReceiverId())) {
+				oldMessage.setReceiverId(message.getReceiverId());
+			}
+			if (!StringUtils.isEmpty(message.getSenderId())) {
+				oldMessage.setSenderId(message.getSenderId());
+			}
+			if (!StringUtils.isEmpty(message.getContent())) {
+				oldMessage.setContent(message.getContent());
+			}				
+			oldMessage = messageRepo.save(oldMessage);
+			return ResponseEntity.status(HttpStatus.OK).body(oldMessage);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
+		}
 	}
 }

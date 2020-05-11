@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,25 +39,34 @@ public class ConversationController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}
 	}
-	
+
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteConversationById(@PathVariable Integer id) {
 		conversationRepo.deleteById(id);
 	}
 
-	@PostMapping(path = "/{conversations}")
-	public ResponseEntity<Conversation> postConversation(@PathVariable Conversation conversations, @RequestBody Conversation conversation) {
-
+	@PostMapping
+	public ResponseEntity<Conversation> postConversation(@RequestBody Conversation conversation) {
+		conversation.setId(null);
 		conversation = conversationRepo.save(conversation);
 		return ResponseEntity.status(HttpStatus.CREATED).body(conversation);
 	}
-		
+
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Conversation> putConversation(@PathVariable Integer id, @RequestBody Conversation conversation) {
-		
-		Conversation oldConversation = conversationRepo.findById(id).get();
-		oldConversation = conversationRepo.save(oldConversation);
-		return ResponseEntity.status(HttpStatus.OK).body(oldConversation);
+		if (conversationRepo.existsById(id)) {
+			Conversation oldConversation = conversationRepo.findById(id).get();
+			if (!StringUtils.isEmpty(conversation.getMembers())) {
+				oldConversation.setMembers(conversation.getMembers());
+			}
+			if (!StringUtils.isEmpty(conversation.getMessages())) {
+				oldConversation.setMessages(conversation.getMessages());
+			}
+			oldConversation = conversationRepo.save(oldConversation);
+			return ResponseEntity.status(HttpStatus.OK).body(oldConversation);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
+		}
 	}
 }
