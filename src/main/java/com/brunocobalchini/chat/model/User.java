@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "user")
@@ -17,16 +19,17 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(name =  "full_name", nullable = false)
 	private String fullName;
 
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(nullable = false)
 	private String password;
 
-	@Column(nullable = false, unique = true) //Poderia ser um ID tbm
+	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
