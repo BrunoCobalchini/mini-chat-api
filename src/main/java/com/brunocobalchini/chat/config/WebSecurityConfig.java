@@ -36,7 +36,7 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
 		return http.authorizeExchange()
-				.pathMatchers("/", "/favicon.ico", "/index.html", "/webjars/**").permitAll()
+				.pathMatchers("/", "/favicon.ico", "/index.html", "/app.js", "/app.css", "/webjars/**").permitAll()
 				.anyExchange().authenticated().and().build();
 	}
 

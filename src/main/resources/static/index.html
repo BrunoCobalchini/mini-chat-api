@@ -1,17 +1,44 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="todoApp" ng-csp>
   <head>
     <title>MiniChat</title>
-    <link rel="stylesheet" type="text/css" href="webjars/angular/1.7.9/angular-csp.css">
-    <script src="/webjars/angular/angular.min.js"></script>
-    <script src="/webjars/angular-material/angular-material.js"></script>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/webjars/angular/1.7.9/angular-csp.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/angular-material/angular-material.min.css">
+    <link rel="stylesheet" type="text/css" href="/app.css">
   </head>
   <body>
-    <div>
-      <label>Name:</label>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <hr>
-      <h1>Hello {{yourName}}!</h1>
+    <div ng-controller="TodoListController as todoList" ng-cloak>
+      <md-toolbar class="md-warn">
+        <div class="md-toolbar-tools">
+          <h2 class="md-flex">Things to do:</h2>
+        </div>
+      </md-toolbar>
+      <md-content flex layout-padding>
+	      <span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining</span>
+	      [ <a href="" ng-click="todoList.archive()">archive</a> ]
+	      <ul class="unstyled">
+	        <li ng-repeat="todo in todoList.todos">
+	          <label class="checkbox">
+	            <input type="checkbox" ng-model="todo.done">
+	            <span class="done-{{todo.done}}">{{todo.text}}</span>
+	          </label>
+	        </li>
+	      </ul>
+	      <form ng-submit="todoList.addTodo()">
+	        <input type="text" ng-model="todoList.todoText"  size="30"
+	               placeholder="add new todo here">
+	        <input class="btn-primary" type="submit" value="add">
+	      </form>       
+	  </md-content>
     </div>
+    
+    <script src="/webjars/angular/angular.min.js"></script>
+    <script src="/webjars/angular-aria/angular-aria.min.js"></script>
+    <script src="/webjars/angular-animate/angular-animate.min.js"></script>
+    <script src="/webjars/angular-messages/angular-messages.min.js"></script>
+    <script src="/webjars/angular-material/angular-material.min.js"></script>
+    <script src="/app.js"></script>
+    
   </body>
 </html>
