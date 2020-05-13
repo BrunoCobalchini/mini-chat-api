@@ -3,6 +3,7 @@ package com.brunocobalchini.chat.component;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.brunocobalchini.chat.model.Conversation;
@@ -24,25 +25,28 @@ public class DatabasePopulator {
 	@Autowired
 	private ConversationRepository conversationRepo;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@PostConstruct
 	public void populate() {
 		
 		User fury = new User();
 		fury.setFullName("Nick Fury");
 		fury.setEmail("nick@nick.com");
-		fury.setPassword("unknown");
+		fury.setPassword(passwordEncoder.encode("unknown"));
 		fury = userRepo.save(fury);
 		
 		User tony = new User();
 		tony.setFullName("Tony Stark");
 		tony.setEmail("tony@tony.com");
-		tony.setPassword("unknown");
+		tony.setPassword(passwordEncoder.encode("unknown"));
 		tony = userRepo.save(tony);
 		
 		User steve = new User();
 		steve.setFullName("Steve Rogers");
 		steve.setEmail("steve@steve.com");
-		steve.setPassword("unknown");
+		steve.setPassword(passwordEncoder.encode("unknown"));
 		steve = userRepo.save(steve);
 		
 		Conversation conv = new Conversation();

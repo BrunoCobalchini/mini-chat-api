@@ -1,10 +1,12 @@
-package com.github.brunocobalchini.controller;
+package com.brunocobalchini.chat.controller;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping
 	public Collection<User> getUsers(){
@@ -33,8 +38,9 @@ public class UserController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-		if (userRepo.existsById(id)) {
-			return ResponseEntity.ok(userRepo.findById(id).get());
+		Optional<User> usu = userRepo.findById(id);
+		if (usu.isPresent()) {
+			return ResponseEntity.ok(usu.get());
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}
@@ -49,14 +55,26 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<User> postUser(@RequestBody User user) {
 		user.setId(null);
+		if (StringUtils.isEmpty(user.getEmail())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if (StringUtils.isEmpty(user.getFullName())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		if (StringUtils.isEmpty(user.getPassword())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} else {
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+		}
 		user = userRepo.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(user);
 	}
 
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<User> putUser(@PathVariable Integer id, @RequestBody User user) {
-		if (userRepo.existsById(id)) {
-			User oldUser = userRepo.findById(id).get();
+		Optional<User> usu = userRepo.findById(id);
+		if (usu.isPresent()) {
+			User oldUser = usu.get();
 			if (!StringUtils.isEmpty(user.getEmail())) {
 				oldUser.setEmail(user.getEmail());
 			}
@@ -64,7 +82,7 @@ public class UserController {
 				oldUser.setFullName(user.getFullName());
 			}
 			if (!StringUtils.isEmpty(user.getPassword())) {
-				oldUser.setPassword(user.getPassword());
+				oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
 			}				
 			oldUser = userRepo.save(oldUser);
 			return ResponseEntity.status(HttpStatus.OK).body(oldUser);
