@@ -6,8 +6,8 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -18,7 +18,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-@Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 public class WebSecurityConfig {
@@ -27,7 +26,7 @@ public class WebSecurityConfig {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	RouterFunction<ServerResponse> indexRouter(@Value("classpath:/static/index.html") final Resource indexHtml) {
 		return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).bodyValue(indexHtml));
@@ -36,8 +35,9 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
 		return http.authorizeExchange()
-				.pathMatchers("/", "/favicon.ico", "/index.html", "/app.js", "/app.css", "/webjars/**").permitAll()
-				.anyExchange().authenticated().and().build();
+				.pathMatchers(HttpMethod.GET, "/", "/favicon.ico", "/index.html", "/app.js", "/app.css", "/webjars/**").permitAll()
+				.anyExchange().authenticated()
+				.and().httpBasic().and().build();
 	}
 
 }

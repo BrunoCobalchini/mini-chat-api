@@ -1,11 +1,10 @@
-package com.github.brunocobalchini.controller;
+package com.brunocobalchini.chat.controller;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,10 +56,10 @@ public class ConversationController {
 	public ResponseEntity<Conversation> putConversation(@PathVariable Integer id, @RequestBody Conversation conversation) {
 		if (conversationRepo.existsById(id)) {
 			Conversation oldConversation = conversationRepo.findById(id).get();
-			if (!StringUtils.isEmpty(conversation.getMembers())) {
+			if (conversation.getMembers() != null && !conversation.getMembers().isEmpty()) {
 				oldConversation.setMembers(conversation.getMembers());
 			}
-			if (!StringUtils.isEmpty(conversation.getMessages())) {
+			if (conversation.getMessages() != null && !conversation.getMessages().isEmpty()) {
 				oldConversation.setMessages(conversation.getMessages());
 			}
 			oldConversation = conversationRepo.save(oldConversation);

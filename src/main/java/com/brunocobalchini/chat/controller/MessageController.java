@@ -1,4 +1,4 @@
-package com.github.brunocobalchini.controller;
+package com.brunocobalchini.chat.controller;
 
 import java.util.Collection;
 
