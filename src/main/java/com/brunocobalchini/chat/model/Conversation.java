@@ -7,6 +7,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +25,12 @@ public class Conversation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id; 
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "conversation_member", joinColumns = @JoinColumn(name = "conversation_id"))
 	@Column(name = "member_id", nullable = false)
 	private Set<Integer> members = new HashSet<>();
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "conversation_message", joinColumns = @JoinColumn(name = "conversation_id"))
 	@Column(name = "message_id", nullable = false)
 	private Set<Integer> messages = new HashSet<>();
