@@ -57,16 +57,17 @@ public class MessageController {
 	public ResponseEntity<Message> putMessage(@PathVariable Integer id, @RequestBody Message message) {
 		if (messageRepo.existsById(id)) {
 			Message oldMessage = messageRepo.findById(id).get();
-			if (!StringUtils.isEmpty(message.getReceiverId())) {
+			if (message.getReceiverId() != null) {
 				oldMessage.setReceiverId(message.getReceiverId());
 			}
-			if (!StringUtils.isEmpty(message.getSenderId())) {
+			if (message.getSenderId() != null) {
 				oldMessage.setSenderId(message.getSenderId());
 			}
 			if (!StringUtils.isEmpty(message.getContent())) {
 				oldMessage.setContent(message.getContent());
 			}				
 			oldMessage = messageRepo.save(oldMessage);
+			
 			return ResponseEntity.status(HttpStatus.OK).body(oldMessage);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
