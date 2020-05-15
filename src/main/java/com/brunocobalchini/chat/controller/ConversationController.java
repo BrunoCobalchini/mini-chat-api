@@ -26,10 +26,10 @@ public class ConversationController {
 	@Autowired
 	private ConversationRepository conversationRepo;
 
-	@GetMapping
-	public Collection<Conversation> getConversations(){
-		return conversationRepo.findAll();
-	}
+		@GetMapping
+		public Collection<Conversation> getConversations(){
+			return conversationRepo.findAll();
+		}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Conversation> getConversationById(@PathVariable UUID id) {
