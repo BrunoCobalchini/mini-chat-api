@@ -50,28 +50,28 @@ public class DatabasePopulator {
 		steve = userRepo.save(steve);
 		
 		Conversation conv = new Conversation();
-		conv.getMembers().add(fury.getId());
-		conv.getMembers().add(tony.getId());		
-		conv.getMembers().add(steve.getId());
+		conv.getMembers().add(fury.getEmail());
+		conv.getMembers().add(tony.getEmail());		
+		conv.getMembers().add(steve.getEmail());
 		conv = conversationRepo.save(conv);
 
 		Message message = new Message();
 		message.setContent("Avengers, assemble!");
-		message.setSenderId(fury.getId());
+		message.setSenderId(fury.getEmail());
 		message.setReceiverId(conv.getId());
 		message = messageRepo.save(message);
 		conv.getMessages().add(message.getId());
 		
 		message = new Message();
 		message.setContent("I am Iron Man");
-		message.setSenderId(tony.getId());
+		message.setSenderId(tony.getEmail());
 		message.setReceiverId(conv.getId());
 		message = messageRepo.save(message);
 		conv.getMessages().add(message.getId());
 		
 		message = new Message();
 		message.setContent("I Can Do This All Day");
-		message.setSenderId(steve.getId());
+		message.setSenderId(steve.getEmail());
 		message.setReceiverId(conv.getId());
 		message = messageRepo.save(message);
 		conv.getMessages().add(message.getId());

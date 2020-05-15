@@ -1,6 +1,7 @@
 package com.brunocobalchini.chat.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,10 +27,10 @@ public class Message {
 	private Integer id;
 
 	@Column(name =  "sender_id", nullable = false)
-	private Integer senderId;
+	private String senderId;
 
 	@Column(name =  "receiver_id", nullable = false)
-	private Integer receiverId;
+	private UUID receiverId;
 
 	@Column(nullable = false)
 	private String content;
@@ -38,19 +39,19 @@ public class Message {
 	@Column(name =  "created_on", nullable = false)
 	private LocalDateTime createdOn;
 
-	public Integer getSenderId() {
+	public String getSenderId() {
 		return senderId;
 	}
 
-	public void setSenderId(Integer senderId) {
+	public void setSenderId(String senderId) {
 		this.senderId = senderId;
 	}
 
-	public Integer getReceiverId() {
+	public UUID getReceiverId() {
 		return receiverId;
 	}
 
-	public void setReceiverId(Integer receiverId) {
+	public void setReceiverId(UUID receiverId) {
 		this.receiverId = receiverId;
 	}
 
@@ -61,7 +62,7 @@ public class Message {
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}

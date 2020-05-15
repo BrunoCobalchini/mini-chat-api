@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements ReactiveUserDetailsService {
 
 	@Override
 	public Mono<UserDetails> findByUsername(final String username) {
-		Optional<User> usu = userRepository.findByEmail(username);
+		Optional<User> usu = userRepository.findById(username);
 		if (usu.isPresent()) {
 			return Mono.just(usu.get()).map(UserAccount::new);
 		} else {

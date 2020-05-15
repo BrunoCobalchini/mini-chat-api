@@ -2,8 +2,6 @@ package com.brunocobalchini.chat.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,10 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-
 	@Column(name =  "full_name", nullable = false)
 	private String fullName;
 
@@ -27,16 +21,9 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
+	@Id
 	@Column(nullable = false, unique = true)
 	private String email;
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Integer getId() {
-		return id;
-	}
 
 	public String getFullName() {
 		return fullName;
