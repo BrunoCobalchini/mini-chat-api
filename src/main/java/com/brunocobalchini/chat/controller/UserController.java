@@ -37,7 +37,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+	public ResponseEntity<User> getUserById(@PathVariable String id) {
 		Optional<User> usu = userRepo.findById(id);
 		if (usu.isPresent()) {
 			return ResponseEntity.ok(usu.get());
@@ -48,13 +48,12 @@ public class UserController {
 
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteUserById(@PathVariable Integer id) {
+	public void deleteUserById(@PathVariable String id) {
 		userRepo.deleteById(id);
 	}
 
 	@PostMapping
 	public ResponseEntity<User> postUser(@RequestBody User user) {
-		user.setId(null);
 		if (StringUtils.isEmpty(user.getEmail())) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
@@ -71,7 +70,7 @@ public class UserController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<User> putUser(@PathVariable Integer id, @RequestBody User user) {
+	public ResponseEntity<User> putUser(@PathVariable String id, @RequestBody User user) {
 		Optional<User> usu = userRepo.findById(id);
 		if (usu.isPresent()) {
 			User oldUser = usu.get();

@@ -1,6 +1,7 @@
 package com.brunocobalchini.chat.controller;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ConversationController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<Conversation> getConversationById(@PathVariable Integer id) {
+	public ResponseEntity<Conversation> getConversationById(@PathVariable UUID id) {
 		if (conversationRepo.existsById(id)) {
 			return ResponseEntity.ok(conversationRepo.findById(id).get());
 		} else {
@@ -41,7 +42,7 @@ public class ConversationController {
 
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteConversationById(@PathVariable Integer id) {
+	public void deleteConversationById(@PathVariable UUID id) {
 		conversationRepo.deleteById(id);
 	}
 
@@ -53,7 +54,7 @@ public class ConversationController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<Conversation> putConversation(@PathVariable Integer id, @RequestBody Conversation conversation) {
+	public ResponseEntity<Conversation> putConversation(@PathVariable UUID id, @RequestBody Conversation conversation) {
 		if (conversationRepo.existsById(id)) {
 			Conversation oldConversation = conversationRepo.findById(id).get();
 			if (conversation.getMembers() != null && !conversation.getMembers().isEmpty()) {
