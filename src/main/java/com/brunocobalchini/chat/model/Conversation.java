@@ -36,13 +36,13 @@ public class Conversation {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "conversation_message", joinColumns = @JoinColumn(name = "conversation_id"))
 	@Column(name = "message_id", nullable = false)
-	private Set<Integer> messages = new HashSet<>();
+	private Set<UUID> messages = new HashSet<>();
 
-	public Set<Integer> getMessages() {
+	public Set<UUID> getMessages() {
 		return messages;
 	}
 
-	public void setMessages(Set<Integer> messages) {
+	public void setMessages(Set<UUID> messages) {
 		this.messages = messages;
 	}
 
