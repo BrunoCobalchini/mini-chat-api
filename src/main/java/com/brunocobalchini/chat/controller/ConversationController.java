@@ -1,11 +1,15 @@
 package com.brunocobalchini.chat.controller;
 
+import java.security.Principal;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,15 +30,21 @@ public class ConversationController {
 	@Autowired
 	private ConversationRepository conversationRepo;
 
-		@GetMapping
-		public Collection<Conversation> getConversations(){
-			return conversationRepo.findAll();
+	@GetMapping
+	public ResponseEntity<Collection<Conversation>> getConversations(Principal principal) {
+		UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) principal;
+		if (token != null && !StringUtils.isEmpty(token.getName())) {
+			return ResponseEntity.ok(conversationRepo.findByMembers(token.getName()));
+		} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();	
 		}
+	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Conversation> getConversationById(@PathVariable UUID id) {
-		if (conversationRepo.existsById(id)) {
-			return ResponseEntity.ok(conversationRepo.findById(id).get());
+		Optional<Conversation> conv = conversationRepo.findById(id);
+		if (conv.isPresent()) {
+			return ResponseEntity.ok(conv.get());
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}

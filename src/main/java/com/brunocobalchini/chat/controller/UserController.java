@@ -1,6 +1,5 @@
 package com.brunocobalchini.chat.controller;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.brunocobalchini.chat.model.Conversation;
 import com.brunocobalchini.chat.model.User;
-import com.brunocobalchini.chat.repository.ConversationRepository;
 import com.brunocobalchini.chat.repository.UserRepository;
 
 @RestController
@@ -31,25 +28,7 @@ public class UserController {
 	private UserRepository userRepo;
 
 	@Autowired
-	private ConversationRepository conversationRepo;
-	
-	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-	//	@GetMapping
-	//	public Collection<User> getUsers(){
-	//		return userRepo.findAll();
-	//	}
-	
-	@GetMapping(path = "/{id}/conversations")
-	public ResponseEntity<Collection<Conversation>> getConversations(@PathVariable String id) {
-		Optional<User> usu = userRepo.findById(id);
-		if (usu.isPresent()) {
-			return ResponseEntity.ok(conversationRepo.findByMembers(id));
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
-		}
-	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable String id) {

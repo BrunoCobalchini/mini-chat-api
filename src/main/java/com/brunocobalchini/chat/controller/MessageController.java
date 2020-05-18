@@ -1,5 +1,6 @@
 package com.brunocobalchini.chat.controller;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,11 @@ public class MessageController {
 	@Autowired
 	private MessageRepository messageRepo;
 
-	//	@GetMapping
-	//	public Collection<Message> getMessages(){
-	//		return messageRepo.findAll();
-	//	}
-
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Message> getMessageById(@PathVariable UUID id) {
-		if (messageRepo.existsById(id)) {
-			return ResponseEntity.ok(messageRepo.findById(id).get());
+		Optional<Message> msg  = messageRepo.findById(id);
+		if (msg.isPresent()) {
+			return ResponseEntity.ok(msg.get());
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}
@@ -55,20 +52,18 @@ public class MessageController {
 
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<Message> putMessage(@PathVariable UUID id, @RequestBody Message message) {
-		if (messageRepo.existsById(id)) {
-			Message oldMessage = messageRepo.findById(id).get();
+		Optional<Message> oldMessage = messageRepo.findById(id);
+		if (oldMessage.isPresent()) {
 			if (message.getReceiverId() != null) {
-				oldMessage.setReceiverId(message.getReceiverId());
+				oldMessage.get().setReceiverId(message.getReceiverId());
 			}
 			if (message.getSenderId() != null) {
-				oldMessage.setSenderId(message.getSenderId());
+				oldMessage.get().setSenderId(message.getSenderId());
 			}
 			if (!StringUtils.isEmpty(message.getContent())) {
-				oldMessage.setContent(message.getContent());
+				oldMessage.get().setContent(message.getContent());
 			}				
-			oldMessage = messageRepo.save(oldMessage);
-
-			return ResponseEntity.status(HttpStatus.OK).body(oldMessage);
+			return ResponseEntity.status(HttpStatus.OK).body(messageRepo.save(oldMessage.get()));
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();	
 		}
